@@ -33,6 +33,7 @@ class TwoPlayersSetup implements ActionListener {
         java.util.Date date = new Date();
         return dateFormat.format(date);
     }
+    String xPLayerName, oPlayerName;
     public TwoPlayersSetup()
     {
         //setTitle("Registration Form");
@@ -60,6 +61,7 @@ class TwoPlayersSetup implements ActionListener {
         tname.setSize(190, 20);
         tname.setLocation(250, 100);
         c.add(tname);
+        xPLayerName = tname.getText();
 
         name2 = new JLabel("O Player Name");
         name2.setFont(new Font("MV Boli", Font.PLAIN, 20));
@@ -72,33 +74,8 @@ class TwoPlayersSetup implements ActionListener {
         tname2.setSize(190, 20);
         tname2.setLocation(250, 150);
         c.add(tname2);
+        oPlayerName = tname2.getText();
 
-
-       /* chooseXO = new JLabel("Choose");
-        chooseXO.setFont(new Font("MV Boli", Font.PLAIN, 20));
-        chooseXO.setSize(100, 20);
-        chooseXO.setLocation(100, 150);
-        c.add(chooseXO);*/
-
-       /* X = new JRadioButton("X");
-        X.setFont(new Font("MV Boli", Font.PLAIN, 15));
-        X.setSelected(true);
-        X.setSize(75, 20);
-        X.setFocusable(false);
-        X.setLocation(200, 150);
-        c.add(X);
-
-        O = new JRadioButton("O");
-        O.setFont(new Font("MV Boli", Font.PLAIN, 15));
-        O.setSelected(false);
-        O.setSize(80, 20);
-        O.setFocusable(false);
-        O.setLocation(275, 150);
-        c.add(O);
-
-        choose = new ButtonGroup();
-        choose.add(X);
-        choose.add(O);*/
 
         backBtn = new JButton("Back");
         backBtn.setFont(new Font("MV Boli", Font.PLAIN, 15));
@@ -133,7 +110,7 @@ class TwoPlayersSetup implements ActionListener {
     {
         if(e.getSource()==submitBtn){
             frame.dispose();
-            TwoPlayersGame twoPlayersGame = new TwoPlayersGame();
+            TwoPlayersGame twoPlayersGame = new TwoPlayersGame(getDate(), xPLayerName, oPlayerName);
 
         } else if (e.getSource()==backBtn) {
             frame.dispose();
