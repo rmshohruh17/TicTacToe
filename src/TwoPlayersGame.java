@@ -1,6 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
@@ -17,11 +23,24 @@ public class TwoPlayersGame implements ActionListener, Serializable {
     JButton[] buttons = new JButton[9];
     JButton prev = new JButton("back");
 
+    String uname = "root";
+    String password = "aet4gieh9etie3Nokoo7bai4";
+    String query = "INSERT INTO gameHistory(Date, X_Player, O_Player, Winner)";
+    String url = "jdbc:mysql://65.108.218.58:33306/TicTacToe?autoReconnect=true&useSSL=false";
+
+
     JOptionPane myOption = new JOptionPane();
-
+    public String getDate(){
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+        java.util.Date date = new Date();
+        return dateFormat.format(date);
+    }
     boolean player1_turn;
-
-    TwoPlayersGame(){
+    String date, xPlayerName, oPlayerName;
+    TwoPlayersGame(String date, String xPlayerName, String oPlayerName){
+        this.xPlayerName = xPlayerName;
+        this.oPlayerName = oPlayerName;
+        this.date = date;
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(300, 90, 800, 800);
@@ -212,6 +231,27 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         for (int i = 0; i < 9; i++) {
             buttons[i].setEnabled(false);
         }
+
+        //Writing to database
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+            throw new RuntimeException(e1);
+        }
+
+        try {
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            statement.executeUpdate(query + " VALUES('" + date +"', '" + xPlayerName +"', '" + oPlayerName + "', '" +
+                    xPlayerName + "');");
+            con.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+
         textfield.setText("X wins");
 
         //alert button
@@ -222,7 +262,7 @@ public class TwoPlayersGame implements ActionListener, Serializable {
             LaunchPage launchPage = new LaunchPage();
         } else if (answer == JOptionPane.NO_OPTION) {
             frame.dispose();
-            TwoPlayersGame TwoPlayersGame = new TwoPlayersGame();
+            TwoPlayersGame TwoPlayersGame = new TwoPlayersGame(getDate(),xPlayerName, oPlayerName);
         }
     }
 
@@ -236,6 +276,27 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         for(int i=0;i<9;i++) {
             buttons[i].setEnabled(false);
         }
+
+        //Writing to database
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+            throw new RuntimeException(e1);
+        }
+
+        try {
+            Connection con = DriverManager.getConnection(url, uname, password);
+            Statement statement = con.createStatement();
+            statement.executeUpdate(query + " VALUES('" + date +"', '" + xPlayerName +"', '" + oPlayerName + "', '" +
+                    oPlayerName + "');");
+            con.close();
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
+
+
         textfield.setText("O wins");
 
         //alert button
@@ -247,7 +308,7 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         }
         else if(answer==JOptionPane.NO_OPTION){
             frame.dispose();
-            TwoPlayersGame TwoPlayersGame = new TwoPlayersGame();
+            TwoPlayersGame TwoPlayersGame = new TwoPlayersGame(getDate(),xPlayerName, oPlayerName);
         }
     }
 
@@ -292,7 +353,7 @@ public class TwoPlayersGame implements ActionListener, Serializable {
                 }
                 else if(answer==JOptionPane.NO_OPTION){
                     frame.dispose();
-                    TwoPlayersGame TwoPlayersGame = new TwoPlayersGame();
+                    TwoPlayersGame TwoPlayersGame = new TwoPlayersGame(getDate(),xPlayerName, oPlayerName);
                 }
             }
         }
