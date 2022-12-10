@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
+import java.net.URL;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -36,6 +37,12 @@ public class TwoPlayersGame implements ActionListener, Serializable {
     boolean player1_turn;
     String date, xPlayerName, oPlayerName;
     TwoPlayersGame(String date, String xPlayerName, String oPlayerName){
+
+        URL iconURL = getClass().getResource("logo.jpg");
+        // iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+        frame.setIconImage(icon.getImage());
+
         this.xPlayerName = xPlayerName;
         this.oPlayerName = oPlayerName;
         this.date = date;
@@ -219,10 +226,19 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         ) {
             oWins(2,4,6);
         }
-        else if (number == 0) {
-            draw();
+        else{
+            int counter = 0;
+            for (int i=0;i<9;i++){
+                if (buttons[i].getText() != ""){
+                    counter+=1;
+                }
+                if(counter == 9){
+                    draw();
+                }
+            }
         }
     }
+
     public void xWins(int a,int b,int c) {
         buttons[a].setBackground(new Color(185, 138, 238));
         buttons[b].setBackground(new Color(185, 138, 238));
@@ -262,7 +278,7 @@ public class TwoPlayersGame implements ActionListener, Serializable {
 
         //alert button
         String[] myOption = {"Main Menu", "Play Again"};
-        int answer = JOptionPane.showOptionDialog(new JFrame(), "Game is over."+ xPlayerName + " wins. What's next?", "Action", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, myOption, null);
+        int answer = JOptionPane.showOptionDialog(new JFrame(), "Game is over. "+xPlayerName+" wins. What's next?", "Action", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, myOption, null);
         if (answer == JOptionPane.YES_OPTION) {
             frame.dispose();
             LaunchPage launchPage = new LaunchPage();
@@ -283,6 +299,8 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         for(int i=0;i<9;i++) {
             buttons[i].setEnabled(false);
         }
+
+
 //Writing to database
         try {
             Connection con = DriverManager.getConnection(url, uname, password);
@@ -300,11 +318,13 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
+
+
         textfield.setText("O wins");
 
         //alert button
         String[] myOption = {"Main Menu", "Play Again"};
-        int answer = JOptionPane.showOptionDialog(new JFrame(), "Game is over."+ oPlayerName +" wins. What's next?","Action",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, myOption, null);
+        int answer = JOptionPane.showOptionDialog(new JFrame(), "Game is over. "+oPlayerName+" wins. What's next?","Action",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, myOption, null);
         if(answer==JOptionPane.YES_OPTION){
             frame.dispose();
             LaunchPage launchPage = new LaunchPage();
@@ -320,7 +340,7 @@ public class TwoPlayersGame implements ActionListener, Serializable {
         for(int i=0;i<9;i++) {
             buttons[i].setEnabled(false);
         }
-        textfield.setText("=DRAW=");
+        textfield.setText("Draw");
 
         //Writing to database
         try {
@@ -392,6 +412,5 @@ public class TwoPlayersGame implements ActionListener, Serializable {
             }
         }
     }
-
 }
 

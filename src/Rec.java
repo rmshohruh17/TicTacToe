@@ -1,31 +1,45 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
-import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-class Rec implements ActionListener {
-    JFrame frame;
-    JTable table;
+public class Rec {
+    public static void main(String[] argv) throws Exception {
+        DefaultTableModel model = new DefaultTableModel();
+        JTable table = new JTable(model);
+        model.addColumn("Col1");
+        model.addRow(new Object[] { "r1" });
+        model.addRow(new Object[] { "r2" });
+        model.addRow(new Object[] { "r3" });
 
-    Rec(){
-        frame= new JFrame();
-        frame.setVisible(true);
-        frame.setSize(200, 300);
+        Vector data = model.getDataVector();
+        Vector row = (Vector) data.elementAt(1);
 
-        table = new JTable();
-        table.setBounds(30, 40, 200, 300);
-    }
+        int mColIndex = 0;
+        List colData = new ArrayList(table.getRowCount());
+        for (int i = 0; i < table.getRowCount(); i++) {
+            row = (Vector) data.elementAt(i);
+            colData.add(row.get(mColIndex));
+        }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+        // Append a new column with copied data
+        model.addColumn("Col3", colData.toArray());
 
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
+        JFrame f = new JFrame();
+        f.setSize(300, 300);
+        f.add(new JScrollPane(table));
+        f.setVisible(true);
     }
 }
+
+
+
+
+
+
+
+

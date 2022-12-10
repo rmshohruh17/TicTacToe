@@ -4,11 +4,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
 
 
+
 public class LaunchPage implements ActionListener {
+
+
     JFrame frame = new JFrame();
     JLabel label = new JLabel("Tic Tac Toe");
     JButton myButton = new JButton("One player");
@@ -16,7 +20,14 @@ public class LaunchPage implements ActionListener {
     JButton myButton3 = new JButton("Records");
 
 
+
     LaunchPage() {
+
+        URL iconURL = getClass().getResource("logo.jpg");
+        // iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+        frame.setIconImage(icon.getImage());
+
         GridPane grid = new GridPane();
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBorder(new EmptyBorder(40, 3, 10, 3));
@@ -78,7 +89,7 @@ public class LaunchPage implements ActionListener {
 
         else if (e.getSource()==myButton3) {
             frame.dispose();
-            Rec r = new Rec();
+            GameRecords gameRecords = new GameRecords();
         }
 
 

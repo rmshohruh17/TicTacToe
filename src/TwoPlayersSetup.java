@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,6 +41,10 @@ class TwoPlayersSetup implements ActionListener {
         frame.setBounds(300, 90, 500, 400);
         frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        URL iconURL = getClass().getResource("logo.jpg");
+        // iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+        frame.setIconImage(icon.getImage());
 
         c = frame.getContentPane();
         c.setLayout(null);
@@ -74,7 +79,6 @@ class TwoPlayersSetup implements ActionListener {
         tname2.setSize(190, 20);
         tname2.setLocation(250, 150);
         c.add(tname2);
-
 
         backBtn = new JButton("Back");
         backBtn.setFont(new Font("MV Boli", Font.PLAIN, 15));

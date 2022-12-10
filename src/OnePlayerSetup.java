@@ -127,7 +127,15 @@ class OnePlayerSetup implements ActionListener {
 
         if(e.getSource()==submitBtn){
             frame.dispose();
-            OnePlayerGame onePlayerGame = new OnePlayerGame(getDate(), xPlayerName, oPlayerName);
+            if(xPlayerName == "COMPUTER"){
+                //if player is O
+                OnePlayerGameO onePlayerGameO = new OnePlayerGameO(getDate(), xPlayerName, oPlayerName);
+            } else {
+                //if player is X
+                OnePlayerGameX onePlayerGameX = new OnePlayerGameX(getDate(), xPlayerName, oPlayerName);
+            }
+
+
         } else if (e.getSource()==backBtn) {
             frame.dispose();
             LaunchPage launchPage = new LaunchPage();
